@@ -1,0 +1,578 @@
+<!-- NeonAI: Frontend HTML template. -->
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>NeonAI — Login</title>
+    <link rel="icon" type="image/png" href="/static/favicon.png" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Poppins:wght@300;400;600&display=swap"
+        rel="stylesheet" />
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --glow: #00ffc8;
+            --bg: #000;
+            --card-bg: rgba(255, 255, 255, 0.03);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: #fff;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ── ANIMATED BACKGROUND ── */
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0, 255, 200, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 200, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes gridMove {
+            from {
+                transform: translate(0, 0);
+            }
+
+            to {
+                transform: translate(50px, 50px);
+            }
+        }
+
+        .bg-orbs {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.12;
+            animation: orbFloat 8s ease-in-out infinite alternate;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--glow);
+            top: -100px;
+            left: -100px;
+        }
+
+        .orb-2 {
+            width: 300px;
+            height: 300px;
+            background: #bf00ff;
+            bottom: -50px;
+            right: -50px;
+            animation-delay: -3s;
+            animation-duration: 10s;
+        }
+
+        .orb-3 {
+            width: 200px;
+            height: 200px;
+            background: #0088ff;
+            top: 50%;
+            left: 60%;
+            animation-delay: -5s;
+            animation-duration: 12s;
+        }
+
+        @keyframes orbFloat {
+            from {
+                transform: translate(0, 0) scale(1);
+            }
+
+            to {
+                transform: translate(40px, -30px) scale(1.15);
+            }
+        }
+
+        /* ── PARTICLES ── */
+        .login-particles {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .lp {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--glow);
+            border-radius: 50%;
+            opacity: 0;
+            animation: lpFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes lpFloat {
+            0% {
+                opacity: 0;
+                transform: translateY(0) scale(0);
+            }
+
+            40% {
+                opacity: 0.6;
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-150px) scale(2);
+            }
+        }
+
+        /* ── AUTH CARD ── */
+        .auth-card {
+            position: relative;
+            z-index: 10;
+            width: 380px;
+            max-width: 92vw;
+            padding: 40px 32px;
+            background: var(--card-bg);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 24px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 60px rgba(0, 255, 200, 0.04);
+            text-align: center;
+            animation: cardAppear 0.8s ease;
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Logo */
+        .auth-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--glow);
+            text-shadow: 0 0 25px var(--glow), 0 0 50px rgba(0, 255, 200, 0.3);
+            margin-bottom: 5px;
+            animation: logoGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes logoGlow {
+
+            0%,
+            100% {
+                text-shadow: 0 0 25px var(--glow), 0 0 50px rgba(0, 255, 200, 0.3);
+            }
+
+            50% {
+                text-shadow: 0 0 35px var(--glow), 0 0 70px rgba(0, 255, 200, 0.4), 0 0 100px rgba(0, 255, 200, 0.15);
+            }
+        }
+
+        .auth-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 5px;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .auth-subtitle {
+            font-size: 0.72rem;
+            color: rgba(255, 255, 255, 0.3);
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+        }
+
+        /* Tab Toggle */
+        .auth-tabs {
+            display: flex;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 14px;
+            padding: 3px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.4);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            cursor: pointer;
+            border-radius: 11px;
+            transition: all 0.3s ease;
+        }
+
+        .auth-tab.active {
+            background: var(--glow);
+            color: #000;
+            box-shadow: 0 0 20px rgba(0, 255, 200, 0.3);
+        }
+
+        /* Form */
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .auth-form.hidden {
+            display: none;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.88rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input::placeholder {
+            color: rgba(255, 255, 255, 0.25);
+        }
+
+        .input-group input:focus {
+            border-color: var(--glow);
+            box-shadow: 0 0 15px rgba(0, 255, 200, 0.1), inset 0 0 15px rgba(0, 255, 200, 0.03);
+        }
+
+        .auth-btn {
+            padding: 14px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--glow) 0%, #00cc9f 100%);
+            color: #000;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .auth-btn:hover::before {
+            left: 100%;
+        }
+
+        .auth-btn:hover {
+            box-shadow: 0 0 30px rgba(0, 255, 200, 0.4), 0 8px 25px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .auth-btn:active {
+            transform: scale(0.98);
+        }
+
+        .auth-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Error / Success */
+        .auth-msg {
+            font-size: 0.75rem;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 5px;
+            display: none;
+            animation: msgPop 0.3s ease;
+        }
+
+        @keyframes msgPop {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .auth-msg.error {
+            display: block;
+            background: rgba(255, 50, 50, 0.1);
+            border: 1px solid rgba(255, 50, 50, 0.2);
+            color: #ff6b6b;
+        }
+
+        .auth-msg.success {
+            display: block;
+            background: rgba(0, 255, 200, 0.08);
+            border: 1px solid rgba(0, 255, 200, 0.2);
+            color: var(--glow);
+        }
+
+        /* Loading spinner on button */
+        .auth-btn .spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(0, 0, 0, 0.2);
+            border-top-color: #000;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Footer */
+        .auth-footer {
+            margin-top: 20px;
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.15);
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 420px) {
+            .auth-card {
+                padding: 30px 22px;
+            }
+
+            .auth-logo {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Background Effects -->
+    <div class="bg-grid"></div>
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+    <div class="login-particles" id="loginParticles"></div>
+
+    <!-- Auth Card -->
+    <div class="auth-card">
+        <div class="auth-logo">N</div>
+        <div class="auth-title">NEON AI</div>
+        <div class="auth-subtitle">Your Personal AI Assistant</div>
+
+        <div id="authMsg" class="auth-msg"></div>
+
+        <!-- Tab Toggle -->
+        <div class="auth-tabs">
+            <button class="auth-tab active" id="tabLogin" onclick="switchTab('login')">LOGIN</button>
+            <button class="auth-tab" id="tabSignup" onclick="switchTab('signup')">SIGN UP</button>
+        </div>
+
+        <!-- Login Form -->
+        <form class="auth-form" id="loginForm" onsubmit="event.preventDefault(); handleLogin();">
+            <div class="input-group">
+                <input type="email" id="loginEmail" placeholder="Email" required autocomplete="email" />
+            </div>
+            <div class="input-group">
+                <input type="password" id="loginPassword" placeholder="Password" required
+                    autocomplete="current-password" />
+            </div>
+            <button type="submit" class="auth-btn" id="loginBtn">ENTER →</button>
+        </form>
+
+        <!-- Signup Form -->
+        <form class="auth-form hidden" id="signupForm" onsubmit="event.preventDefault(); handleSignup();">
+            <div class="input-group">
+                <input type="text" id="signupName" placeholder="Your Name" required autocomplete="name" />
+            </div>
+            <div class="input-group">
+                <input type="email" id="signupEmail" placeholder="Email" required autocomplete="email" />
+            </div>
+            <div class="input-group">
+                <input type="password" id="signupPassword" placeholder="Password (min 4 chars)" required minlength="4"
+                    autocomplete="new-password" />
+            </div>
+            <button type="submit" class="auth-btn" id="signupBtn">CREATE ACCOUNT →</button>
+        </form>
+
+        <div class="auth-footer">NeonAI v5.0 — ACE</div>
+    </div>
+
+    <script>
+        // Generate particles
+        (function () {
+            const pc = document.getElementById('loginParticles');
+            for (let i = 0; i < 25; i++) {
+                const p = document.createElement('div');
+                p.className = 'lp';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.top = (30 + Math.random() * 50) + '%';
+                p.style.animationDelay = (Math.random() * 4) + 's';
+                p.style.animationDuration = (3 + Math.random() * 3) + 's';
+                p.style.width = p.style.height = (1.5 + Math.random() * 2.5) + 'px';
+                pc.appendChild(p);
+            }
+        })();
+
+        function switchTab(tab) {
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            const tabLogin = document.getElementById('tabLogin');
+            const tabSignup = document.getElementById('tabSignup');
+            const msg = document.getElementById('authMsg');
+
+            msg.className = 'auth-msg';
+            msg.style.display = 'none';
+
+            if (tab === 'login') {
+                loginForm.classList.remove('hidden');
+                signupForm.classList.add('hidden');
+                tabLogin.classList.add('active');
+                tabSignup.classList.remove('active');
+            } else {
+                signupForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+                tabSignup.classList.add('active');
+                tabLogin.classList.remove('active');
+            }
+        }
+
+        function showMsg(text, type) {
+            const msg = document.getElementById('authMsg');
+            msg.textContent = text;
+            msg.className = `auth-msg ${type}`;
+        }
+
+        function setLoading(btnId, loading) {
+            const btn = document.getElementById(btnId);
+            if (loading) {
+                btn.disabled = true;
+                btn.dataset.origText = btn.innerHTML;
+                btn.innerHTML = '<span class="spinner"></span> PLEASE WAIT...';
+            } else {
+                btn.disabled = false;
+                btn.innerHTML = btn.dataset.origText || 'SUBMIT';
+            }
+        }
+
+        async function handleLogin() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            if (!email || !password) { showMsg('Fill all fields.', 'error'); return; }
+
+            setLoading('loginBtn', true);
+
+            try {
+                const res = await fetch('/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    showMsg('Welcome back! Redirecting...', 'success');
+                    setTimeout(() => { window.location.href = '/'; }, 800);
+                } else {
+                    showMsg(data.message || 'Invalid credentials.', 'error');
+                    setLoading('loginBtn', false);
+                }
+            } catch (e) {
+                showMsg('Connection error.', 'error');
+                setLoading('loginBtn', false);
+            }
+        }
+
+        async function handleSignup() {
+            const name = document.getElementById('signupName').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const password = document.getElementById('signupPassword').value;
+
+            if (!name || !email || !password) { showMsg('Fill all fields.', 'error'); return; }
+            if (password.length < 4) { showMsg('Password must be at least 4 characters.', 'error'); return; }
+
+            setLoading('signupBtn', true);
+
+            try {
+                const res = await fetch('/auth/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    showMsg('Account created! Logging in...', 'success');
+                    setTimeout(() => { window.location.href = '/'; }, 800);
+                } else {
+                    showMsg(data.message || 'Signup failed.', 'error');
+                    setLoading('signupBtn', false);
+                }
+            } catch (e) {
+                showMsg('Connection error.', 'error');
+                setLoading('signupBtn', false);
+            }
+        }
+    </script>
+</body>
+
+</html>

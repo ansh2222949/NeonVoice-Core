@@ -1,0 +1,79 @@
+# Environment files
+.env
+.env.*
+!.env.example
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Python cache / test output
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+pytest-cache-files-*/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Build / packaging
+build/
+dist/
+*.egg-info/
+.installed.cfg
+*.egg
+*.manifest
+*.spec
+
+# Local app data / generated databases
+user_data/
+exam/uploads/
+exam/vector_store/
+voice/temp/
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# Large local model caches
+models/embeddings/
+
+# User-customized media
+static/wallpapers/current_bg_[0-9]*
+static/wallpapers/voice_video_[0-9]*
+static/wallpapers/profile_dp_[0-9]*
+
+# Logs / generated reports
+*.log
+test_output.txt
+test_result.log
+pytest_out.txt
+output.txt
+output_utf8.txt
+tree_output.txt
+tree_utf8.txt
+code_flow_report.md
+
+# IDEs and editors
+.vscode/
+.idea/
+.sfdx/
+*.swp
+*.swo
+
+# OS-generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Agent / assistant metadata
+.gemini/

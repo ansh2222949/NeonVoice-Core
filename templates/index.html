@@ -1,0 +1,787 @@
+<!-- NeonAI: Frontend HTML template. -->
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>NeonAI V5 - ACE</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Poppins:wght@300;400;600&family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/Draggable.min.js"></script>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+
+  <!-- PWA Support -->
+  <link rel="manifest" href="/static/manifest.json" />
+  <meta name="theme-color" content="#00ffc8" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="NeonAI" />
+  <link rel="icon" type="image/png" href="/static/favicon.png" />
+  <link rel="apple-touch-icon" href="/static/icons/icon-192.png" />
+
+  <script>
+    window.USER_ID = "{{ user_id | default('anon') }}";
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/static/service-worker.js')
+          .then(() => console.log('[PWA] Service Worker registered'))
+          .catch(e => console.log('[PWA] SW registration failed:', e));
+      });
+    }
+  </script>
+</head>
+
+<body id="appBody" class="theme-emerald">
+
+  <!-- 🚀 PREMIUM 3D STARTUP SPLASH SCREEN -->
+  <div id="splash-screen">
+    <!-- 3D Orbiting Ring System -->
+    <div class="splash-3d-scene">
+      <div class="splash-orbit splash-orbit-1"></div>
+      <div class="splash-orbit splash-orbit-2"></div>
+      <div class="splash-orbit splash-orbit-3"></div>
+    </div>
+
+    <!-- Floating Particles -->
+    <div class="splash-particles" id="splash-particles"></div>
+
+    <!-- Holographic Logo -->
+    <div class="splash-logo-container">
+      <div class="splash-hex-glow"></div>
+      <div class="splash-logo">N</div>
+    </div>
+
+    <div class="splash-text">NEON AI</div>
+    <div class="splash-subtitle" id="splash-status">Initializing Core Systems...</div>
+
+    <div class="splash-progress">
+      <div class="splash-progress-bar"></div>
+    </div>
+
+    <div class="splash-version">v5.0 — ACE</div>
+  </div>
+
+  <style>
+    #splash-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: radial-gradient(ellipse at center, #0a0a0a 0%, #000 70%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      overflow: hidden;
+      transition: opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease;
+    }
+
+    #splash-screen.hide {
+      opacity: 0;
+      transform: scale(1.3);
+      filter: blur(15px);
+      pointer-events: none;
+    }
+
+    /* 3D SCENE — Orbiting Rings */
+    .splash-3d-scene {
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      perspective: 800px;
+      transform-style: preserve-3d;
+    }
+
+    .splash-orbit {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 2px solid transparent;
+    }
+
+    .splash-orbit-1 {
+      border-image: conic-gradient(from 0deg, var(--primary-glow, #00ffc8), transparent 40%, transparent 60%, var(--primary-glow, #00ffc8)) 1;
+      border-style: solid;
+      border-width: 2px;
+      border-color: var(--primary-glow, #00ffc8) transparent transparent transparent;
+      animation: orbitX 3s linear infinite;
+    }
+
+    .splash-orbit-2 {
+      inset: -15px;
+      border-color: transparent var(--primary-glow, #00ffc8) transparent transparent;
+      border-width: 1.5px;
+      border-style: solid;
+      opacity: 0.5;
+      animation: orbitY 4s linear infinite reverse;
+    }
+
+    .splash-orbit-3 {
+      inset: -30px;
+      border-color: transparent transparent var(--primary-glow, #00ffc8) transparent;
+      border-width: 1px;
+      border-style: solid;
+      opacity: 0.3;
+      animation: orbitZ 5s linear infinite;
+    }
+
+    @keyframes orbitX {
+      from {
+        transform: rotateX(70deg) rotateZ(0deg);
+      }
+
+      to {
+        transform: rotateX(70deg) rotateZ(360deg);
+      }
+    }
+
+    @keyframes orbitY {
+      from {
+        transform: rotateY(70deg) rotateZ(0deg);
+      }
+
+      to {
+        transform: rotateY(70deg) rotateZ(360deg);
+      }
+    }
+
+    @keyframes orbitZ {
+      from {
+        transform: rotateX(35deg) rotateY(35deg) rotateZ(0deg);
+      }
+
+      to {
+        transform: rotateX(35deg) rotateY(35deg) rotateZ(360deg);
+      }
+    }
+
+    /* FLOATING PARTICLES */
+    .splash-particles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .splash-particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: var(--primary-glow, #00ffc8);
+      border-radius: 50%;
+      opacity: 0;
+      animation: particleFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes particleFloat {
+      0% {
+        opacity: 0;
+        transform: translateY(0) scale(0);
+      }
+
+      30% {
+        opacity: 0.8;
+      }
+
+      100% {
+        opacity: 0;
+        transform: translateY(-120px) scale(1.5);
+      }
+    }
+
+    /* HOLOGRAPHIC LOGO */
+    .splash-logo-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
+    }
+
+    .splash-hex-glow {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, var(--primary-glow, #00ffc8) 0%, transparent 70%);
+      opacity: 0.15;
+      filter: blur(25px);
+      animation: hexPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes hexPulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 0.15;
+      }
+
+      50% {
+        transform: scale(1.8);
+        opacity: 0.25;
+      }
+    }
+
+    .splash-logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 4rem;
+      font-weight: 900;
+      color: var(--primary-glow, #00ffc8);
+      text-shadow:
+        0 0 20px var(--primary-glow, #00ffc8),
+        0 0 40px var(--primary-glow, #00ffc8),
+        0 0 80px rgba(0, 255, 200, 0.3);
+      animation: logoPulse3D 2s ease-in-out infinite;
+      z-index: 2;
+    }
+
+    @keyframes logoPulse3D {
+
+      0%,
+      100% {
+        transform: scale(1) rotateY(0deg);
+        text-shadow: 0 0 20px var(--primary-glow, #00ffc8), 0 0 40px var(--primary-glow, #00ffc8);
+      }
+
+      25% {
+        transform: scale(1.05) rotateY(5deg);
+      }
+
+      50% {
+        transform: scale(1.1) rotateY(0deg);
+        text-shadow: 0 0 30px var(--primary-glow, #00ffc8), 0 0 60px var(--primary-glow, #00ffc8), 0 0 100px rgba(0, 255, 200, 0.2);
+      }
+
+      75% {
+        transform: scale(1.05) rotateY(-5deg);
+      }
+    }
+
+    .splash-text {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #fff;
+      margin-top: 35px;
+      letter-spacing: 10px;
+      opacity: 0;
+      z-index: 3;
+      background: linear-gradient(90deg, #fff 0%, var(--primary-glow, #00ffc8) 50%, #fff 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: splashFadeUp 0.8s ease 0.5s forwards, textShine 3s linear 1.3s infinite;
+    }
+
+    @keyframes textShine {
+      0% {
+        background-position: 200% center;
+      }
+
+      100% {
+        background-position: -200% center;
+      }
+    }
+
+    .splash-subtitle {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.35);
+      margin-top: 10px;
+      letter-spacing: 2px;
+      opacity: 0;
+      z-index: 3;
+      animation: splashFadeUp 0.8s ease 0.9s forwards;
+      transition: opacity 0.3s ease;
+    }
+
+    .splash-progress {
+      width: 200px;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      margin-top: 25px;
+      overflow: hidden;
+      opacity: 0;
+      z-index: 3;
+      animation: splashFadeUp 0.5s ease 1.1s forwards;
+    }
+
+    .splash-progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, transparent, var(--primary-glow, #00ffc8), #fff, var(--primary-glow, #00ffc8), transparent);
+      background-size: 200% 100%;
+      border-radius: 10px;
+      animation: splashLoad 2.2s ease 1.1s forwards, barGlow 1.5s linear infinite;
+    }
+
+    @keyframes barGlow {
+      0% {
+        background-position: 200% 0;
+      }
+
+      100% {
+        background-position: -200% 0;
+      }
+    }
+
+    .splash-version {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.6rem;
+      color: rgba(255, 255, 255, 0.15);
+      position: absolute;
+      bottom: 30px;
+      letter-spacing: 2px;
+      z-index: 3;
+    }
+
+    @keyframes splashFadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes splashLoad {
+      to {
+        width: 100%;
+      }
+    }
+  </style>
+
+  <script>
+    // Generate floating particles
+    (function () {
+      const pc = document.getElementById('splash-particles');
+      if (!pc) return;
+      for (let i = 0; i < 20; i++) {
+        const p = document.createElement('div');
+        p.className = 'splash-particle';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.top = (40 + Math.random() * 40) + '%';
+        p.style.animationDelay = (Math.random() * 3) + 's';
+        p.style.animationDuration = (2 + Math.random() * 2) + 's';
+        p.style.width = p.style.height = (2 + Math.random() * 3) + 'px';
+        pc.appendChild(p);
+      }
+    })();
+
+    // Cycle status text
+    (function () {
+      const statusEl = document.getElementById('splash-status');
+      if (!statusEl) return;
+      const steps = [
+        'Initializing Core Systems...',
+        'Loading Neural Engine...',
+        'Connecting to LLM...',
+        'Preparing Interface...',
+        'Almost Ready...'
+      ];
+      let i = 0;
+      const interval = setInterval(() => {
+        i++;
+        if (i < steps.length && statusEl) {
+          statusEl.style.opacity = '0';
+          setTimeout(() => {
+            statusEl.textContent = steps[i];
+            statusEl.style.opacity = '1';
+          }, 200);
+        }
+        if (i >= steps.length) clearInterval(interval);
+      }, 550);
+    })();
+
+    // Dismiss splash
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const splash = document.getElementById('splash-screen');
+        if (splash) {
+          splash.classList.add('hide');
+          setTimeout(() => splash.remove(), 900);
+        }
+      }, 3200);
+    });
+  </script>
+  <div class="bg-layer" id="bgLayer"></div>
+  <video id="bg-video" class="bg-video-layer" muted playsinline loop preload="metadata"></video>
+  <div class="liquid-bg"></div>
+  <div class="rgb-strip"></div>
+  <div id="drawer-overlay" onclick="toggleDrawer()"></div>
+
+  <header>
+    <div class="logo-box">
+      <div id="neon-logo">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%; filter: drop-shadow(0 0 8px var(--primary-glow));">
+          <path d="M50 5 L95 25 L95 75 L50 95 L5 75 L5 25 Z" stroke="currentColor" stroke-width="4" fill="none" class="hex-border"/>
+          <path d="M25 70 L25 30 L75 70 L75 30" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" class="n-path"/>
+        </svg>
+      </div>
+      <div id="neon-name">NEON AI</div>
+    </div>
+
+    <div class="header-controls">
+      <button aria-label="toggle" aria-pressed="false" class="liquid-toggle">
+        <div class="knockout">
+          <div class="indicator indicator--masked">
+            <div class="mask"></div>
+          </div>
+        </div>
+        <div class="indicator__liquid">
+          <div class="shadow"></div>
+          <div class="wrapper">
+            <div class="liquids">
+              <div class="liquid__shadow"></div>
+              <div class="liquid__track"></div>
+            </div>
+          </div>
+          <div class="cover"></div>
+        </div>
+      </button>
+      <button id="soundToggle" class="sound-toggle" type="button" aria-label="Unmute wallpaper video"
+        onclick="toggleVideoSound()">
+        <span id="soundIcon" class="sound-icon" aria-hidden="true">
+          <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="square" stroke-linejoin="miter">
+            <path d="M10 6L6 10H3v4h3l4 4V6z" />
+            <line x1="15" y1="9" x2="21" y2="15" />
+            <line x1="21" y1="9" x2="15" y2="15" />
+          </svg>
+        </span>
+      </button>
+      <button type="button" class="menu-btn icon-btn" aria-label="Open settings" onclick="toggleDrawer()">
+        <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+          <line x1="4" y1="7" x2="20" y2="7" />
+          <line x1="10" y1="12" x2="20" y2="12" />
+          <line x1="4" y1="17" x2="20" y2="17" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <div id="drawer">
+    <button type="button" class="drawer-close icon-btn" aria-label="Close settings" onclick="toggleDrawer()">
+      <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M6 6 18 18" />
+        <path d="M18 6 6 18" />
+      </svg>
+    </button>
+
+    <div class="profile-container">
+      <div class="badge-ansh">ACE</div>
+      <div class="profile-ring-wrapper" onclick="document.getElementById('profileUpload').click()">
+        <div class="profile-ring-glow"></div>
+        <div class="profile-ring-sharp"></div>
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" id="displayProfilePic" class="profile-img"
+          alt="User" />
+      </div>
+      <label for="profileUpload" style="font-size: 0.8rem; color: #888; cursor: pointer; margin-bottom: 10px;">
+        Tap image to change
+      </label>
+
+      <input type="file" id="profileUpload" accept="image/*" style="display: none" onchange="changeProfilePic()" />
+      <input type="text" id="userName" class="profile-input" placeholder="Name" value="{{ user_name }}"
+        oninput="saveProfile()" />
+      <input type="email" id="userEmail" class="profile-input" placeholder="email@neon.ai" value="{{ user_email }}"
+        onchange="saveProfile()" />
+    </div>
+
+    <div class="setting-item">
+      <label>Wallpaper (Photo / Video)</label>
+      <label for="bgUpload" class="custom-file-upload" id="bgDropZone">
+        <span id="bgNameDisplay">Upload Image / Video</span>
+      </label>
+      <div class="upload-hint" id="bgUploadHint">
+        Video up to 50MB • Image up to 10MB
+      </div>
+      <div class="upload-hint" id="bgStatusLine">
+        Current: Default
+      </div>
+      <div class="upload-progress" id="bgUploadProgress" style="display:none;">
+        <div class="upload-progress-bar" id="bgUploadProgressBar" style="width:0%;"></div>
+      </div>
+      <button type="button" class="save-btn" id="bgRemoveBtn" style="margin-top:10px; width:100%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);">
+        Remove custom wallpaper
+      </button>
+      <input type="file" id="bgUpload" accept="image/*,video/mp4,video/webm,video/mov" style="display: none"
+        onchange="changeWallpaper()" />
+    </div>
+
+    <div class="setting-item">
+      <label>Voice Animation Video</label>
+      <label for="voiceVideoUpload" class="custom-file-upload voice-video-setting">
+        <span id="voiceVideoName">Upload Video (15s Loop)</span>
+      </label>
+      <input type="file" id="voiceVideoUpload" accept="video/*" style="display: none" onchange="changeVoiceVideo()" />
+    </div>
+
+    <div class="setting-item">
+      <label>UI Theme</label>
+      <div class="theme-grid" id="themeGrid">
+        <div class="theme-circle" data-theme="theme-emerald" style="background: #00ff88;"
+          onclick="handleThemeChange('theme-emerald')" title="Emerald Green"></div>
+        <div class="theme-circle" data-theme="theme-cyber" style="background: #ff00cc;"
+          onclick="handleThemeChange('theme-cyber')" title="Cyber Pink"></div>
+        <div class="theme-circle" data-theme="theme-blue" style="background: #00ccff;"
+          onclick="handleThemeChange('theme-blue')" title="Electric Blue"></div>
+        <div class="theme-circle" data-theme="theme-purple" style="background: #9d00ff;"
+          onclick="handleThemeChange('theme-purple')" title="Plasma Purple"></div>
+        <div class="theme-circle" data-theme="theme-gold" style="background: #ffbd00;"
+          onclick="handleThemeChange('theme-gold')" title="Solar Gold"></div>
+        <div class="theme-circle" data-theme="theme-red" style="background: #ff3333;"
+          onclick="handleThemeChange('theme-red')" title="Crimson Red"></div>
+        <div class="theme-circle" data-theme="theme-lime" style="background: #ccff00;"
+          onclick="handleThemeChange('theme-lime')" title="Toxic Lime"></div>
+        <div class="theme-circle" data-theme="theme-ice" style="background: #a0f0ff;"
+          onclick="handleThemeChange('theme-ice')" title="Ice Crystal"></div>
+        <div class="theme-circle" data-theme="theme-obsidian" style="background: #555555;"
+          onclick="handleThemeChange('theme-obsidian')" title="Stealth Obsidian"></div>
+        <div class="theme-circle" data-theme="theme-rgb"
+          style="background: radial-gradient(circle, #ff0000, #00ff00, #0000ff);"
+          onclick="handleThemeChange('theme-rgb')" title="RGB Hyper"></div>
+        <div class="theme-circle" data-theme="theme-sunset" style="background: #ff6b35;"
+          onclick="handleThemeChange('theme-sunset')" title="Sunset"></div>
+        <div class="theme-circle" data-theme="theme-aurora" style="background: #00e5a0;"
+          onclick="handleThemeChange('theme-aurora')" title="Aurora"></div>
+        <div class="theme-circle" data-theme="theme-ocean" style="background: #0077b6;"
+          onclick="handleThemeChange('theme-ocean')" title="Midnight Ocean"></div>
+        <div class="theme-circle" data-theme="theme-tokyo" style="background: #ff2d8a;"
+          onclick="handleThemeChange('theme-tokyo')" title="Neon Tokyo"></div>
+        <div class="theme-circle" data-theme="theme-rosegold" style="background: #e8a87c;"
+          onclick="handleThemeChange('theme-rosegold')" title="Rose Gold"></div>
+        <!-- 💎 Premium Dual-Tone Themes -->
+        <div class="theme-circle" data-theme="theme-premium-1"
+          style="background: linear-gradient(135deg, #04F2FF, #024B4F);" onclick="handleThemeChange('theme-premium-1')"
+          title="Premium Cyan Deep"></div>
+        <div class="theme-circle" data-theme="theme-premium-2"
+          style="background: linear-gradient(135deg, #00FFFF, #FF00FF);" onclick="handleThemeChange('theme-premium-2')"
+          title="Cyberpunk Clash"></div>
+        <div class="theme-circle" data-theme="theme-premium-3"
+          style="background: linear-gradient(135deg, #39FF14, #8A2BE2);" onclick="handleThemeChange('theme-premium-3')"
+          title="Toxic Violet"></div>
+        <div class="theme-circle" data-theme="theme-premium-4"
+          style="background: linear-gradient(135deg, #FF4500, #1E90FF);" onclick="handleThemeChange('theme-premium-4')"
+          title="Fire & Ice"></div>
+        <div class="theme-circle" data-theme="theme-premium-5"
+          style="background: linear-gradient(135deg, #FFFF00, #FF1493);" onclick="handleThemeChange('theme-premium-5')"
+          title="Sunset Overdrive"></div>
+      </div>
+    </div>
+
+    <div class="setting-item">
+      <label>Background Preset</label>
+      <select id="bgPresetSelect" onchange="handleBgPresetChange(this.value)">
+        <option value="none">Default (None)</option>
+        <option value="preset-deep-space">Deep Space</option>
+        <option value="preset-cyber-grid">Cyber Grid</option>
+        <option value="preset-dark-abstract">Dark Abstract</option>
+        <option value="preset-neon-city">Neon City</option>
+        <option value="preset-liquid-plasma">Liquid Plasma</option>
+      </select>
+    </div>
+
+    <div class="setting-item">
+      <label for="modeSelect">Operation Mode</label>
+      <select id="modeSelect" onchange="handleModeChange(this.value)">
+        <option value="casual">NEON AI</option>
+        <option value="movie">NEON MOVIES</option>
+        <option value="exam">NEON STUDY</option>
+        <option value="voice_assistant">NEON VOICE</option>
+      </select>
+      <div id="mode-hint"
+        style="font-size: 0.7rem; color: rgba(255, 255, 255, 0.5); margin-top: 5px; font-style: italic; letter-spacing: 0.5px;">
+        General assistant
+      </div>
+    </div>
+
+    <div class="setting-item">
+      <label>API Keys (Pro)</label>
+      <input type="password" id="apiKeyInput" placeholder="Tavily Key (Web)" />
+      <input type="password" id="tmdbKeyInput" placeholder="TMDB Key (Movies)" style="margin-top: 8px" />
+      <div class="setting-actions">
+        <button class="save-btn" onclick="saveAllKeys()">Save All</button>
+        <button class="save-btn danger-btn" onclick="removeAllKeys()">Clear</button>
+      </div>
+    </div>
+
+    <div class="setting-item">
+      <label>LLM Provider (Premium)</label>
+      <select id="llmProviderSelect" onchange="saveLLMProvider()">
+        <option value="local">Local Ollama (Free)</option>
+        <option value="openai">OpenAI (ChatGPT)</option>
+        <option value="gemini">Google Gemini</option>
+        <option value="claude">Anthropic Claude</option>
+      </select>
+      <div id="llm-provider-hint"
+        style="font-size: 0.7rem; color: rgba(255, 255, 255, 0.5); margin-top: 5px; font-style: italic; letter-spacing: 0.5px;">
+        Using local Ollama models (free)
+      </div>
+    </div>
+
+    <div class="setting-item" id="llmKeysSection">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 8px;">
+        <label style="margin-bottom: 0;">LLM API Keys</label>
+        <span style="font-size: 0.65rem; color: rgba(255,255,255,0.4); font-family: 'Inter', sans-serif;">(Optional)</span>
+      </div>
+      <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 8px;">
+        <input type="password" id="openaiKeyInput" placeholder="OpenAI API Key" style="flex: 1; margin: 0;" />
+        <button class="delete-key-btn" onclick="deleteSingleLLMKey('openai')" title="Remove OpenAI Key">✕</button>
+      </div>
+      <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 8px;">
+        <input type="password" id="geminiKeyInput" placeholder="Gemini API Key" style="flex: 1; margin: 0;" />
+        <button class="delete-key-btn" onclick="deleteSingleLLMKey('gemini')" title="Remove Gemini Key">✕</button>
+      </div>
+      <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 8px;">
+        <input type="password" id="claudeKeyInput" placeholder="Claude API Key" style="flex: 1; margin: 0;" />
+        <button class="delete-key-btn" onclick="deleteSingleLLMKey('claude')" title="Remove Claude Key">✕</button>
+      </div>
+      <div class="setting-actions">
+        <button class="save-btn" onclick="saveLLMKeys()">Save LLM Keys</button>
+        <button class="save-btn danger-btn" onclick="deleteAllLLMKeys()">Clear All</button>
+      </div>
+    </div>
+
+    <div class="setting-item">
+      <label>📄 Resume ATS Analyzer (Offline PDF)</label>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <label for="visionUpload" class="custom-file-upload ai-upload-btn">
+          <span id="visionFileName">Upload Resume (.pdf)</span>
+        </label>
+        <input type="file" id="visionUpload" accept=".pdf" style="display: none" onchange="analyzeVisionImage()" />
+        <input type="text" id="visionQuery" placeholder="e.g. Analyze resume, ATS score..." style="margin: 0;" />
+      </div>
+      <div id="visionResult"
+        style="display: none; margin-top: 12px; padding: 14px; font-size: 0.85rem; border-radius: 12px; background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.9); white-space: pre-wrap; max-height: 300px; overflow-y: auto; line-height: 1.5;">
+      </div>
+    </div>
+
+    <div class="setting-item" id="examUpload" style="display: none">
+      <label>Exam Syllabus</label>
+      <label for="pdfFile" class="custom-file-upload">
+        <span id="fileNameDisplay">Choose PDF</span>
+      </label>
+      <input type="file" id="pdfFile" accept=".pdf" style="display: none" onchange="uploadPDF()" />
+      <div class="setting-actions setting-actions-compact">
+        <button class="save-btn" onclick="deletePDF()" style="background: #ff8800; font-size: 0.8rem">Del
+          PDF</button>
+        <button class="save-btn" onclick="resetExamDB()" style="background: #ff0000; font-size: 0.8rem">Reset
+          DB</button>
+      </div>
+    </div>
+
+    <div class="setting-item"
+      style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 20px;">
+      <button class="save-btn" onclick="window.location.href='/auth/logout'"
+        style="background: linear-gradient(135deg, #ff4444, #cc0000); color: white; letter-spacing: 2px;">LOGOUT</button>
+    </div>
+  </div>
+
+  <div id="movie-carousel">
+    <div class="carousel-title">Trending Now (Real-time)</div>
+    <div class="carousel-subtitle">Swipe to explore trending content</div>
+    <div class="cards-wrapper" id="cards-container"></div>
+  </div>
+
+  <div id="chat-container">
+    <div class="chat-row assistant">
+      <div class="chat-avatar-container">
+        <div class="ai-avatar-multiglow"></div>
+        <div class="ai-n-logo">
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%; filter: drop-shadow(0 0 8px var(--primary-glow));">
+            <path d="M50 5 L95 25 L95 75 L50 95 L5 75 L5 25 Z" stroke="currentColor" stroke-width="4" fill="none" class="hex-border"/>
+            <path d="M25 70 L25 30 L75 70 L75 30" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" class="n-path"/>
+          </svg>
+        </div>
+      </div>
+      <div class="msg-column">
+        <div class="chat-name-tag">Neon AI</div>
+        <div class="msg">
+          HEY, <br />Welcome back, <span id="welcomeName">{{ user_name }}</span>.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <form class="input-box" onsubmit="event.preventDefault(); sendMessage();">
+    <!-- Inline Image Preview Box -->
+    <div id="chat-image-preview-container" class="chat-image-preview-container" style="display: none;">
+      <img id="chat-image-preview" src="" alt="Preview" />
+      <button type="button" class="clear-image-btn" onclick="clearChatImage()" title="Remove image">✕</button>
+    </div>
+
+    <label for="chatImageUpload" class="chat-upload-btn" title="Upload Image">
+      <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+        <polyline points="21 15 16 10 5 21"></polyline>
+      </svg>
+    </label>
+    <input type="file" id="chatImageUpload" accept="image/*" style="display: none" onchange="handleChatImageUpload(event)" />
+    
+    <input type="text" id="userInput" placeholder="Type command..." autocomplete="off" />
+    <button type="submit" class="send-btn" aria-label="Send message">
+      <span class="send-btn-core">
+        <svg class="ui-icon send-icon-anim" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+          <path d="M22 2L11 13" />
+          <path d="M22 2L15 22L11 13L2 9L22 2Z" />
+        </svg>
+      </span>
+    </button>
+  </form>
+
+  <svg xmlns="http://www.w3.org/2000/svg"
+    style="position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none;" aria-hidden="true"
+    focusable="false">
+    <defs>
+      <filter id="goo">
+        <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="13"></feGaussianBlur>
+        <feColorMatrix in="blur" result="colorMatrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 13 -10" type="matrix">
+        </feColorMatrix>
+        <feComposite in="colorMatrix" operator="atop"></feComposite>
+      </filter>
+
+      <filter id="knockout" color-interpolation-filters="sRGB">
+        <feColorMatrix result="knocked" type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 -1 -1 -1 1 0" />
+        <feComponentTransfer>
+          <feFuncR type="linear" slope="3" intercept="-1" />
+          <feFuncG type="linear" slope="3" intercept="-1" />
+          <feFuncB type="linear" slope="3" intercept="-1" />
+        </feComponentTransfer>
+        <feComponentTransfer>
+          <feFuncR type="table" tableValues="0 0 0 0 0 1 1 1 1 1" />
+          <feFuncG type="table" tableValues="0 0 0 0 0 1 1 1 1 1" />
+          <feFuncB type="table" tableValues="0 0 0 0 0 1 1 1 1 1" />
+        </feComponentTransfer>
+      </filter>
+
+      <filter id="remove-black" color-interpolation-filters="sRGB">
+        <feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 -255 -255 -255 0 1" result="black-pixels" />
+        <feMorphology in="black-pixels" operator="dilate" radius="0.5" result="smoothed" />
+        <feComposite in="SourceGraphic" in2="smoothed" operator="out" />
+      </filter>
+    </defs>
+  </svg>
+</body>
+
+</html>
