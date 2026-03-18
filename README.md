@@ -14,19 +14,45 @@
 > [!IMPORTANT]
 > NeonVoice-Core powers NeonAI with scored routing across tools, web lookup, local LLM flows, and voice assistant features.
 
-## Preview
+## Quick Snapshot
 
-![NeonAI Screenshot](https://github.com/user-attachments/assets/ffe4d47e-c869-4e87-8715-db17f9ada04d)
+| Area | Highlights |
+| --- | --- |
+| Core AI | scored routing, confidence gate, local-first pipeline |
+| Modes | casual, coding, movie, exam, voice assistant |
+| Tools | weather, notes, calculator, browser, music, web reader |
+| Stack | Flask, Ollama, Whisper, ChromaDB, GPT-SoVITS |
+
+## Showcase
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/ffe4d47e-c869-4e87-8715-db17f9ada04d" width="95%" alt="NeonAI primary interface" />
+</p>
 
 > [!TIP]
 > Add your next two screenshots later by replacing the placeholder URLs below.
 
+<details>
+<summary>Two-screenshot showcase block</summary>
+
 ```md
-<p align="center">
-  <img src="PASTE_SCREENSHOT_1_URL_HERE" width="48%" alt="NeonVoice-Core screenshot 1" />
-  <img src="PASTE_SCREENSHOT_2_URL_HERE" width="48%" alt="NeonVoice-Core screenshot 2" />
-</p>
+<table>
+  <tr>
+    <td width="50%" align="center">
+      <strong>Main Chat UI</strong>
+      <br><br>
+      <img src="PASTE_SCREENSHOT_1_URL_HERE" width="100%" alt="NeonVoice-Core screenshot 1" />
+    </td>
+    <td width="50%" align="center">
+      <strong>Voice Assistant / Mode View</strong>
+      <br><br>
+      <img src="PASTE_SCREENSHOT_2_URL_HERE" width="100%" alt="NeonVoice-Core screenshot 2" />
+    </td>
+  </tr>
+</table>
 ```
+
+</details>
 
 ## Overview
 
