@@ -1,17 +1,36 @@
-﻿# NeonAI
+﻿<div align="center">
+  <h1>NeonVoice-Core</h1>
+  <strong>Core repository for NeonAI</strong>
+  <br>
+  Local-first AI assistant with mode-based routing, tool calling, voice control, and a Flask web UI.
+  <br><br>
 
-Local-first AI assistant with mode-based routing, tool calling, voice control, and a Flask web UI.
+  ![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white)
+  ![Flask](https://img.shields.io/badge/Backend-Flask-000000?style=flat-square&logo=flask)
+  ![Ollama](https://img.shields.io/badge/LLM-Ollama-f97316?style=flat-square)
+  ![Offline First](https://img.shields.io/badge/Design-Offline%20First-16a34a?style=flat-square)
+</div>
 
-![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white)
-![Flask](https://img.shields.io/badge/Backend-Flask-000000?style=flat-square&logo=flask)
-![Ollama](https://img.shields.io/badge/LLM-Ollama-f97316?style=flat-square)
-![Offline First](https://img.shields.io/badge/Design-Offline%20First-16a34a?style=flat-square)
+> [!IMPORTANT]
+> NeonVoice-Core powers NeonAI with scored routing across tools, web lookup, local LLM flows, and voice assistant features.
+
+## Preview
 
 ![NeonAI Screenshot](https://github.com/user-attachments/assets/ffe4d47e-c869-4e87-8715-db17f9ada04d)
 
+> [!TIP]
+> Add your next two screenshots later by replacing the placeholder URLs below.
+
+```md
+<p align="center">
+  <img src="PASTE_SCREENSHOT_1_URL_HERE" width="48%" alt="NeonVoice-Core screenshot 1" />
+  <img src="PASTE_SCREENSHOT_2_URL_HERE" width="48%" alt="NeonVoice-Core screenshot 2" />
+</p>
+```
+
 ## Overview
 
-NeonAI routes requests through a small local AI system instead of sending everything straight to a single model.
+NeonVoice-Core powers NeonAI and routes requests through a small local AI system instead of sending everything straight to a single model.
 
 - direct tools for weather, notes, calculator, browser actions, system info, and music
 - scored routing between system commands, tools, web lookup, and local LLM generation
